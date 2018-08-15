@@ -12,6 +12,7 @@
 		023A45812111ADCE0040392A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023A457F2111ADCE0040392A /* Main.storyboard */; };
 		023A45832111ADD00040392A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023A45822111ADD00040392A /* Assets.xcassets */; };
 		023A45862111ADD00040392A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023A45842111ADD00040392A /* LaunchScreen.storyboard */; };
+		023A458F2111AE6C0040392A /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A458E2111AE6C0040392A /* Vision.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		023A45822111ADD00040392A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		023A45852111ADD00040392A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		023A45872111ADD00040392A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		023A458E2111AE6C0040392A /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = System/Library/Frameworks/Vision.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				023A458F2111AE6C0040392A /* Vision.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +43,7 @@
 			children = (
 				023A457A2111ADCE0040392A /* FaceRecognition */,
 				023A45792111ADCE0040392A /* Products */,
+				023A458D2111AE6C0040392A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +66,14 @@
 				023A45872111ADD00040392A /* Info.plist */,
 			);
 			path = FaceRecognition;
+			sourceTree = "<group>";
+		};
+		023A458D2111AE6C0040392A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				023A458E2111AE6C0040392A /* Vision.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
