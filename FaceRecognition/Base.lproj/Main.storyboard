@@ -23,28 +23,43 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RP3-4t-gCr">
-                                <rect key="frame" x="136" y="364" width="103" height="30"/>
+                                <rect key="frame" x="163" y="364" width="50" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Face Detection"/>
+                                <state key="normal" title=" 顔検出"/>
                                 <connections>
                                     <action selector="faceDetection" destination="BYZ-38-t0r" eventType="touchUpInside" id="X54-kz-h70"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="23X-qx-bH7">
-                                <rect key="frame" x="170" y="531" width="35" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="reset"/>
-                                <connections>
-                                    <action selector="filterImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eu4-Ys-Led"/>
-                                    <action selector="reset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1KL-fe-B4g"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQq-ir-pHm">
-                                <rect key="frame" x="156" y="433" width="62" height="30"/>
+                                <rect key="frame" x="157" y="478" width="62" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="モザイク"/>
                                 <connections>
-                                    <action selector="filterImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GjA-b7-9CR"/>
+                                    <action selector="filterImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wbc-03-dfc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="23X-qx-bH7">
+                                <rect key="frame" x="164" y="583" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="reset"/>
+                                <connections>
+                                    <action selector="reset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1KL-fe-B4g"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xEc-06-Sz5">
+                                <rect key="frame" x="149" y="533" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="顔モザイク"/>
+                                <connections>
+                                    <action selector="faceMozaiku" destination="BYZ-38-t0r" eventType="touchUpInside" id="bnQ-51-IOu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQZ-nJ-GXT">
+                                <rect key="frame" x="139" y="419" width="96" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title=" 顔塗りつぶし"/>
+                                <connections>
+                                    <action selector="fillFace" destination="BYZ-38-t0r" eventType="touchUpInside" id="JVa-OC-3wf"/>
                                 </connections>
                             </button>
                         </subviews>

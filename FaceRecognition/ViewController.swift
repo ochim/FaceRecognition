@@ -12,13 +12,15 @@ import CoreImage
 
 class ViewController: UIViewController {
 
-    private let originalImage = UIImage(named: "usj")
+    private let originalImage = UIImage(named: "nakayoshi")
+    //private let originalImage = UIImage(named: "usj")
     @IBOutlet weak var imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.imageView.image = originalImage
+        self.imageView.frame.size = CGSize(width: originalImage!.size.width/3, height: originalImage!.size.height/3)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,13 +34,17 @@ class ViewController: UIViewController {
     
     @IBAction func filterImage(_ sender: Any) {
         
-        let ciPhoto = CIImage(cgImage: (self.imageView.image?.cgImage)!)
+        self.imageView.image = mozaiku(image: self.imageView.image!, block: 10)
+    }
+    
+    private func mozaiku(image: UIImage, block: CGFloat) -> UIImage {
+        let ciPhoto = CIImage(cgImage: image.cgImage!)
         
         // フィルタの名前を指定する(今回はモザイク処理)
         let filter = CIFilter(name: "CIPixellate")
         // setValueで対象の画像、効果を指定する
         filter?.setValue(ciPhoto, forKey: kCIInputImageKey) // フィルタをかける対象の写真
-        filter?.setValue(10, forKey: "inputScale")          // ブロックの大きさ
+        filter?.setValue(block, forKey: "inputScale")          // ブロックの大きさ
         
         // フィルタ処理のオブジェクト
         let filteredImage:CIImage = (filter?.outputImage)!
@@ -47,7 +53,7 @@ class ViewController: UIViewController {
         let imageRef = ciContext.createCGImage(filteredImage, from: filteredImage.extent)
         // やっとUIImageに戻る
         let outputImage = UIImage(cgImage:imageRef!, scale:1.0, orientation:UIImageOrientation.up)
-        self.imageView.image = outputImage
+        return outputImage
     }
     
     @IBAction func faceDetection() {
@@ -57,7 +63,7 @@ class ViewController: UIViewController {
             for observation in request.results as! [VNFaceObservation] {
                 image = self.drawFaceRectangle(image: image, observation: observation)
             }
-
+            
             self.imageView.image = image
         }
         
@@ -80,6 +86,106 @@ class ViewController: UIViewController {
         UIGraphicsEndImageContext()
         
         return drawnImage
+    }
+    
+    @IBAction func fillFace() {
+        
+        let request = VNDetectFaceRectanglesRequest { (request, error) in
+            
+            var image = self.imageView.image!
+            for observation in request.results as! [VNFaceObservation] {
+                let rect = observation.boundingBox.converted(to: image.size)
+
+                UIGraphicsBeginImageContextWithOptions(image.size, false, 0.0)
+                let context = UIGraphicsGetCurrentContext()
+                image.draw(in: CGRect(origin: .zero, size: image.size))
+                context?.setFillColor(UIColor.black.cgColor)
+                context?.fill(rect)
+                let drawnImage = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+
+                image = drawnImage!
+            }
+            self.imageView.image = image
+        }
+        
+        if let cgImage = self.imageView.image?.cgImage {
+            let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+            try? handler.perform([request])
+        }
+        
+    }
+    
+    @IBAction func faceMozaiku() {
+
+        let request = VNDetectFaceRectanglesRequest { (request, error) in
+            let image = self.imageView.image!
+            var tmp: UIImage? = nil
+            for observation in request.results as! [VNFaceObservation] {
+                let rect = observation.boundingBox.converted(to: image.size)
+
+                let mi = self.mozaiku(image: image, block: 2)
+                let ci = mi.cropping(to: rect)
+                if tmp == nil {
+                    tmp = image.composite(image: ci!, imageX: rect.origin.x, imageY: rect.origin.y)
+                } else {
+                    tmp = tmp!.composite(image: ci!, imageX: rect.origin.x, imageY: rect.origin.y)
+                }
+            }
+            self.imageView.image = tmp
+        }
+        
+        if let cgImage = self.imageView.image?.cgImage {
+            let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+            try? handler.perform([request])
+        }
+
+    }
+}
+
+extension UIImage {
+    func cropping(to: CGRect) -> UIImage? {
+        var opaque = false
+        if let cgImage = cgImage {
+            switch cgImage.alphaInfo {
+            case .noneSkipLast, .noneSkipFirst:
+                opaque = true
+            default:
+                break
+            }
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(to.size, opaque, scale)
+        draw(at: CGPoint(x: -to.origin.x, y: -to.origin.y))
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return result
+    }
+    
+    func composite(image: UIImage, imageX: CGFloat, imageY: CGFloat) -> UIImage? {
+        
+        UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
+        self.draw(in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
+        
+        let rect = CGRect(x: imageX,
+                          y: imageY,
+                          width: image.size.width,
+                          height: image.size.height)
+        image.draw(in: rect)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+}
+
+extension CGRect {
+    func converted(to size: CGSize) -> CGRect {
+        return CGRect(x: self.minX * size.width,
+                      y: (1 - self.maxY) * size.height,
+                      width: self.width * size.width,
+                      height: self.height * size.height)
     }
 }
 
@@ -118,12 +224,4 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     
 }
 
-extension CGRect {
-    func converted(to size: CGSize) -> CGRect {
-        return CGRect(x: self.minX * size.width,
-                      y: (1 - self.maxY) * size.height,
-                      width: self.width * size.width,
-                      height: self.height * size.height)
-    }
-}
 
