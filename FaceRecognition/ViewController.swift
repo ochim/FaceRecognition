@@ -12,15 +12,21 @@ import CoreImage
 
 class ViewController: UIViewController {
 
-    private let originalImage = UIImage(named: "nakayoshi")
+    private let originalImage = UIImage(named: "futago")
     //private let originalImage = UIImage(named: "usj")
     @IBOutlet weak var imageView: UIImageView!
+    private var contractedImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.imageView.image = originalImage
-        self.imageView.frame.size = CGSize(width: originalImage!.size.width/3, height: originalImage!.size.height/3)
+        // 縮小させる
+        let s = CGSize(width: originalImage!.size.width*0.8, height: originalImage!.size.height*0.8)
+        UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
+        originalImage?.draw(in: CGRect(origin: .zero, size: s))
+        contractedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        self.imageView.image = contractedImage
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,12 +35,12 @@ class ViewController: UIViewController {
     }
 
     @IBAction func reset(_ sender: Any) {
-        self.imageView.image = originalImage
+        self.imageView.image = contractedImage
     }
     
     @IBAction func filterImage(_ sender: Any) {
         
-        self.imageView.image = mozaiku(image: self.imageView.image!, block: 10)
+        self.imageView.image = mozaiku(image: contractedImage!, block: 10)
     }
     
     private func mozaiku(image: UIImage, block: CGFloat) -> UIImage {
@@ -52,14 +58,15 @@ class ViewController: UIViewController {
         let ciContext:CIContext = CIContext(options: nil)
         let imageRef = ciContext.createCGImage(filteredImage, from: filteredImage.extent)
         // やっとUIImageに戻る
-        let outputImage = UIImage(cgImage:imageRef!, scale:1.0, orientation:UIImageOrientation.up)
+        // scaleは1.0 or 2.0
+        let outputImage = UIImage(cgImage:imageRef!, scale:2.0, orientation:UIImageOrientation.up)
         return outputImage
     }
     
     @IBAction func faceDetection() {
         
         let request = VNDetectFaceRectanglesRequest { (request, error) in
-            var image = self.imageView.image
+            var image = self.contractedImage
             for observation in request.results as! [VNFaceObservation] {
                 image = self.drawFaceRectangle(image: image, observation: observation)
             }
@@ -67,7 +74,7 @@ class ViewController: UIViewController {
             self.imageView.image = image
         }
         
-        if let cgImage = self.imageView.image?.cgImage {
+        if let cgImage = self.contractedImage?.cgImage {
             let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             try? handler.perform([request])
         }
@@ -92,7 +99,7 @@ class ViewController: UIViewController {
         
         let request = VNDetectFaceRectanglesRequest { (request, error) in
             
-            var image = self.imageView.image!
+            var image = self.contractedImage!
             for observation in request.results as! [VNFaceObservation] {
                 let rect = observation.boundingBox.converted(to: image.size)
 
@@ -109,7 +116,7 @@ class ViewController: UIViewController {
             self.imageView.image = image
         }
         
-        if let cgImage = self.imageView.image?.cgImage {
+        if let cgImage = self.contractedImage?.cgImage {
             let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             try? handler.perform([request])
         }
@@ -119,12 +126,12 @@ class ViewController: UIViewController {
     @IBAction func faceMozaiku() {
 
         let request = VNDetectFaceRectanglesRequest { (request, error) in
-            let image = self.imageView.image!
+            let image = self.contractedImage!
+            let mi = self.mozaiku(image: image, block: 10)
+            
             var tmp: UIImage? = nil
             for observation in request.results as! [VNFaceObservation] {
                 let rect = observation.boundingBox.converted(to: image.size)
-
-                let mi = self.mozaiku(image: image, block: 2)
                 let ci = mi.cropping(to: rect)
                 if tmp == nil {
                     tmp = image.composite(image: ci!, imageX: rect.origin.x, imageY: rect.origin.y)
@@ -135,7 +142,7 @@ class ViewController: UIViewController {
             self.imageView.image = tmp
         }
         
-        if let cgImage = self.imageView.image?.cgImage {
+        if let cgImage = self.contractedImage?.cgImage {
             let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             try? handler.perform([request])
         }
