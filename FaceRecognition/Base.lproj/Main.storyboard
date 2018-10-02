@@ -73,6 +73,7 @@
                     </view>
                     <connections>
                         <outlet property="imageView" destination="ue0-pK-arf" id="oCH-Na-I61"/>
+                        <outlet property="resetButton" destination="23X-qx-bH7" id="rXW-Y5-RQS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

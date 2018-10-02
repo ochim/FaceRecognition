@@ -14,11 +14,13 @@ class ViewController: UIViewController {
 
     private let originalImage = UIImage(named: "futago")
     //private let originalImage = UIImage(named: "usj")
+    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
     private var contractedImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        resetButton.isHidden = true
         // 縮小させる
         let s = CGSize(width: originalImage!.size.width*0.8, height: originalImage!.size.height*0.8)
         UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
