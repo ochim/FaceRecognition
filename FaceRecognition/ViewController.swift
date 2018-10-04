@@ -60,8 +60,8 @@ class ViewController: UIViewController {
         let ciContext:CIContext = CIContext(options: nil)
         let imageRef = ciContext.createCGImage(filteredImage, from: filteredImage.extent)
         // やっとUIImageに戻る
-        // scaleは1.0 or 2.0
-        let outputImage = UIImage(cgImage:imageRef!, scale:2.0, orientation:UIImageOrientation.up)
+        // scaleに注意
+        let outputImage = UIImage(cgImage:imageRef!, scale:UIScreen.main.scale, orientation:UIImageOrientation.up)
         return outputImage
     }
     

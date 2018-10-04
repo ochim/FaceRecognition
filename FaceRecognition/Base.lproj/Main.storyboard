@@ -21,7 +21,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ue0-pK-arf">
                                 <rect key="frame" x="54" y="41" width="267" height="287"/>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="yod-nU-wvh">
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="yod-nU-wvh">
                                 <rect key="frame" x="139.5" y="413" width="96" height="210"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RP3-4t-gCr">
@@ -64,8 +64,8 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yod-nU-wvh" secondAttribute="bottom" constant="44" id="61O-jJ-0Sy"/>
                             <constraint firstItem="ue0-pK-arf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="Nal-xy-urZ"/>
+                            <constraint firstItem="yod-nU-wvh" firstAttribute="top" secondItem="ue0-pK-arf" secondAttribute="bottom" constant="85" id="UBr-4k-phx"/>
                             <constraint firstItem="ue0-pK-arf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kgo-HZ-NNH"/>
                             <constraint firstItem="yod-nU-wvh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sBO-6k-aoj"/>
                         </constraints>
