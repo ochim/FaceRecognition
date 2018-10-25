@@ -13,14 +13,13 @@ import CoreImage
 class ViewController: UIViewController {
 
     private let originalImage = UIImage(named: "futago")
-    //private let originalImage = UIImage(named: "usj")
+
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
     private var contractedImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        resetButton.isHidden = true
         // 縮小させる
         let s = CGSize(width: originalImage!.size.width*0.8, height: originalImage!.size.height*0.8)
         UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
@@ -40,15 +39,15 @@ class ViewController: UIViewController {
         self.imageView.image = contractedImage
     }
     
+    // モザイク
     @IBAction func filterImage(_ sender: Any) {
-        
         self.imageView.image = mozaiku(image: contractedImage!, block: 10)
     }
     
     private func mozaiku(image: UIImage, block: CGFloat) -> UIImage {
         let ciPhoto = CIImage(cgImage: image.cgImage!)
         
-        // フィルタの名前を指定する(今回はモザイク処理)
+        // フィルタの名前を指定する(モザイク処理)
         let filter = CIFilter(name: "CIPixellate")
         // setValueで対象の画像、効果を指定する
         filter?.setValue(ciPhoto, forKey: kCIInputImageKey) // フィルタをかける対象の写真
@@ -59,12 +58,13 @@ class ViewController: UIViewController {
         // 矩形情報をセットしてレンダリング
         let ciContext:CIContext = CIContext(options: nil)
         let imageRef = ciContext.createCGImage(filteredImage, from: filteredImage.extent)
-        // やっとUIImageに戻る
+        
         // scaleに注意
         let outputImage = UIImage(cgImage:imageRef!, scale:UIScreen.main.scale, orientation:UIImageOrientation.up)
         return outputImage
     }
     
+    // 顔検出
     @IBAction func faceDetection() {
         
         let request = VNDetectFaceRectanglesRequest { (request, error) in
@@ -97,6 +97,7 @@ class ViewController: UIViewController {
         return drawnImage
     }
     
+    // 顔塗りつぶし
     @IBAction func fillFace() {
         
         let request = VNDetectFaceRectanglesRequest { (request, error) in
@@ -125,6 +126,7 @@ class ViewController: UIViewController {
         
     }
     
+    // 顔モザイク
     @IBAction func faceMozaiku() {
 
         let request = VNDetectFaceRectanglesRequest { (request, error) in
@@ -153,6 +155,7 @@ class ViewController: UIViewController {
 }
 
 extension UIImage {
+    // 切り抜き
     func cropping(to: CGRect) -> UIImage? {
         var opaque = false
         if let cgImage = cgImage {
@@ -170,7 +173,7 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return result
     }
-    
+    // 合成
     func composite(image: UIImage, imageX: CGFloat, imageY: CGFloat) -> UIImage? {
         
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
@@ -197,40 +200,4 @@ extension CGRect {
                       height: self.height * size.height)
     }
 }
-
-extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    //　撮影が完了時した時に呼ばれる
-    func imagePickerController(_ imagePicker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            self.imageView.image = pickedImage
-        }
-        
-        imagePicker.dismiss(animated: true, completion: nil)
-    }
-    
-    // 撮影がキャンセルされた時に呼ばれる
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    // アルバムを表示
-    @IBAction func showAlbum(_ sender : AnyObject) {
-        let sourceType:UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.photoLibrary
-        
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
-            
-            let cameraPicker = UIImagePickerController()
-            cameraPicker.sourceType = sourceType
-            cameraPicker.delegate = self
-            self.present(cameraPicker, animated: true, completion: nil)
-        }
-        else{
-        }
-    }
-    
-}
-
 
