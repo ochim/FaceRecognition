@@ -16,18 +16,10 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
-    private var contractedImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // 縮小させる
-        let s = CGSize(width: originalImage!.size.width*0.8, height: originalImage!.size.height*0.8)
-        UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
-        originalImage?.draw(in: CGRect(origin: .zero, size: s))
-        contractedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        self.imageView.image = contractedImage
+        self.imageView.image = originalImage
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,12 +28,12 @@ class ViewController: UIViewController {
     }
 
     @IBAction func reset(_ sender: Any) {
-        self.imageView.image = contractedImage
+        self.imageView.image = originalImage
     }
     
     // モザイク
     @IBAction func filterImage(_ sender: Any) {
-        self.imageView.image = mozaiku(image: contractedImage!, block: 10)
+        self.imageView.image = mozaiku(image: originalImage!, block: 10)
     }
     
     private func mozaiku(image: UIImage, block: CGFloat) -> UIImage {
@@ -68,7 +60,7 @@ class ViewController: UIViewController {
     @IBAction func faceDetection() {
         
         let request = VNDetectFaceRectanglesRequest { (request, error) in
-            var image = self.contractedImage
+            var image = self.originalImage
             for observation in request.results as! [VNFaceObservation] {
                 image = self.drawFaceRectangle(image: image, observation: observation)
             }
@@ -76,7 +68,7 @@ class ViewController: UIViewController {
             self.imageView.image = image
         }
         
-        if let cgImage = self.contractedImage?.cgImage {
+        if let cgImage = self.originalImage?.cgImage {
             let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             try? handler.perform([request])
         }
@@ -102,7 +94,7 @@ class ViewController: UIViewController {
         
         let request = VNDetectFaceRectanglesRequest { (request, error) in
             
-            var image = self.contractedImage!
+            var image = self.originalImage!
             for observation in request.results as! [VNFaceObservation] {
                 let rect = observation.boundingBox.converted(to: image.size)
 
@@ -119,7 +111,7 @@ class ViewController: UIViewController {
             self.imageView.image = image
         }
         
-        if let cgImage = self.contractedImage?.cgImage {
+        if let cgImage = self.originalImage?.cgImage {
             let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             try? handler.perform([request])
         }
@@ -130,7 +122,7 @@ class ViewController: UIViewController {
     @IBAction func faceMozaiku() {
 
         let request = VNDetectFaceRectanglesRequest { (request, error) in
-            let image = self.contractedImage!
+            let image = self.originalImage!
             let mi = self.mozaiku(image: image, block: 10)
             
             var tmp: UIImage? = nil
@@ -146,49 +138,11 @@ class ViewController: UIViewController {
             self.imageView.image = tmp
         }
         
-        if let cgImage = self.contractedImage?.cgImage {
+        if let cgImage = self.originalImage?.cgImage {
             let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             try? handler.perform([request])
         }
 
-    }
-}
-
-extension UIImage {
-    // 切り抜き
-    func cropping(to: CGRect) -> UIImage? {
-        var opaque = false
-        if let cgImage = cgImage {
-            switch cgImage.alphaInfo {
-            case .noneSkipLast, .noneSkipFirst:
-                opaque = true
-            default:
-                break
-            }
-        }
-        
-        UIGraphicsBeginImageContextWithOptions(to.size, opaque, scale)
-        draw(at: CGPoint(x: -to.origin.x, y: -to.origin.y))
-        let result = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return result
-    }
-    // 合成
-    func composite(image: UIImage, imageX: CGFloat, imageY: CGFloat) -> UIImage? {
-        
-        UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
-        self.draw(in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
-        
-        let rect = CGRect(x: imageX,
-                          y: imageY,
-                          width: image.size.width,
-                          height: image.size.height)
-        image.draw(in: rect)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return image
     }
 }
 

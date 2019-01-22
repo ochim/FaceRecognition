@@ -13,6 +13,7 @@
 		023A45832111ADD00040392A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023A45822111ADD00040392A /* Assets.xcassets */; };
 		023A45862111ADD00040392A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023A45842111ADD00040392A /* LaunchScreen.storyboard */; };
 		023A458F2111AE6C0040392A /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A458E2111AE6C0040392A /* Vision.framework */; };
+		02E4157321F70B7700F0E3D4 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		023A45852111ADD00040392A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		023A45872111ADD00040392A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023A458E2111AE6C0040392A /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = System/Library/Frameworks/Vision.framework; sourceTree = SDKROOT; };
+		02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				023A45822111ADD00040392A /* Assets.xcassets */,
 				023A45842111ADD00040392A /* LaunchScreen.storyboard */,
 				023A45872111ADD00040392A /* Info.plist */,
+				02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */,
 			);
 			path = FaceRecognition;
 			sourceTree = "<group>";
@@ -147,6 +150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02E4157321F70B7700F0E3D4 /* UIImage+Extension.swift in Sources */,
 				023A457E2111ADCE0040392A /* ViewController.swift in Sources */,
 				023A457C2111ADCE0040392A /* AppDelegate.swift in Sources */,
 			);
