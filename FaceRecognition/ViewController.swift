@@ -15,7 +15,8 @@ import RxCocoa
 class ViewController: UIViewController {
 
     private let originalImage = UIImage(named: "futago")
-
+    private var contractedImage: UIImage?
+    
     @IBOutlet weak var faceDetectButton: UIButton!
     @IBOutlet weak var fillFaceButton: UIButton!
     @IBOutlet weak var mozaikuButton: UIButton!
@@ -27,11 +28,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.imageView.image = originalImage
+        // 縮小させる
+        let s = CGSize(width: originalImage!.size.width*0.9, height: originalImage!.size.height*0.9)
+        UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
+        originalImage?.draw(in: CGRect(origin: .zero, size: s))
+        contractedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        self.imageView.image = contractedImage
         
         faceDetectButton.rx.tap.subscribe(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
-                var image = self.originalImage
+                var image = self.contractedImage
                 for observation in request.results as! [VNFaceObservation] {
                     image = self.drawFaceRectangle(image: image, observation: observation)
                 }
@@ -39,7 +47,7 @@ class ViewController: UIViewController {
                 self.imageView.image = image
             }
             
-            if let cgImage = self.originalImage?.cgImage {
+            if let cgImage = self.contractedImage?.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
@@ -49,7 +57,7 @@ class ViewController: UIViewController {
         fillFaceButton.rx.tap.subscribe(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
                 
-                var image = self.originalImage!
+                var image = self.contractedImage!
                 for observation in request.results as! [VNFaceObservation] {
                     let rect = observation.boundingBox.converted(to: image.size)
                     
@@ -66,7 +74,7 @@ class ViewController: UIViewController {
                 self.imageView.image = image
             }
             
-            if let cgImage = self.originalImage?.cgImage {
+            if let cgImage = self.contractedImage?.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
@@ -74,12 +82,12 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         mozaikuButton.rx.tap.subscribe(onNext: { _ in
-            self.imageView.image = self.mozaiku(image: self.originalImage!, block: 10)
+            self.imageView.image = self.mozaiku(image: self.contractedImage!, block: 10)
         }).disposed(by: disposeBag)
         
         faceMozaikuButton.rx.tap.subscribe(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
-                let image = self.originalImage!
+                let image = self.contractedImage!
                 let mi = self.mozaiku(image: image, block: 10)
                 
                 var tmp: UIImage? = nil
@@ -95,7 +103,7 @@ class ViewController: UIViewController {
                 self.imageView.image = tmp
             }
             
-            if let cgImage = self.originalImage?.cgImage {
+            if let cgImage = self.contractedImage?.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
@@ -103,7 +111,7 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         resetButton.rx.tap.subscribe(onNext: { _ in
-            self.imageView.image = self.originalImage
+            self.imageView.image = self.contractedImage
         }).disposed(by: disposeBag)
     }
 
