@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,37 +27,22 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RP3-4t-gCr">
                                         <rect key="frame" x="23" y="0.0" width="50" height="30"/>
                                         <state key="normal" title=" 顔検出"/>
-                                        <connections>
-                                            <action selector="faceDetection" destination="BYZ-38-t0r" eventType="touchUpInside" id="X54-kz-h70"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQZ-nJ-GXT">
                                         <rect key="frame" x="0.0" y="45" width="96" height="30"/>
                                         <state key="normal" title=" 顔塗りつぶし"/>
-                                        <connections>
-                                            <action selector="fillFace" destination="BYZ-38-t0r" eventType="touchUpInside" id="JVa-OC-3wf"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQq-ir-pHm">
                                         <rect key="frame" x="17" y="90" width="62" height="30"/>
                                         <state key="normal" title="モザイク"/>
-                                        <connections>
-                                            <action selector="filterImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wbc-03-dfc"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xEc-06-Sz5">
                                         <rect key="frame" x="9.5" y="135" width="77" height="30"/>
                                         <state key="normal" title="顔モザイク"/>
-                                        <connections>
-                                            <action selector="faceMozaiku" destination="BYZ-38-t0r" eventType="touchUpInside" id="bnQ-51-IOu"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="23X-qx-bH7">
                                         <rect key="frame" x="30.5" y="180" width="35" height="30"/>
                                         <state key="normal" title="reset"/>
-                                        <connections>
-                                            <action selector="reset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1KL-fe-B4g"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -72,7 +57,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="faceDetectButton" destination="RP3-4t-gCr" id="ZtH-Ys-1Tp"/>
+                        <outlet property="faceMozaikuButton" destination="xEc-06-Sz5" id="ybR-Ad-YjR"/>
+                        <outlet property="fillFaceButton" destination="gQZ-nJ-GXT" id="IAV-CY-5aE"/>
                         <outlet property="imageView" destination="ue0-pK-arf" id="oCH-Na-I61"/>
+                        <outlet property="mozaikuButton" destination="AQq-ir-pHm" id="eEG-US-efG"/>
                         <outlet property="resetButton" destination="23X-qx-bH7" id="rXW-Y5-RQS"/>
                     </connections>
                 </viewController>
