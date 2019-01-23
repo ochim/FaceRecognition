@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         
         self.imageView.image = contractedImage
         
-        faceDetectButton.rx.tap.subscribe(onNext: { _ in
+        faceDetectButton.rx.tap.asDriver().drive(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
                 var image = self.contractedImage
                 for observation in request.results as! [VNFaceObservation] {
@@ -54,7 +54,7 @@ class ViewController: UIViewController {
 
         }).disposed(by: disposeBag)
         
-        fillFaceButton.rx.tap.subscribe(onNext: { _ in
+        fillFaceButton.rx.tap.asDriver().drive(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
                 
                 var image = self.contractedImage!
@@ -81,11 +81,11 @@ class ViewController: UIViewController {
 
         }).disposed(by: disposeBag)
         
-        mozaikuButton.rx.tap.subscribe(onNext: { _ in
+        mozaikuButton.rx.tap.asDriver().drive(onNext: { _ in
             self.imageView.image = self.mozaiku(image: self.contractedImage!, block: 10)
         }).disposed(by: disposeBag)
         
-        faceMozaikuButton.rx.tap.subscribe(onNext: { _ in
+        faceMozaikuButton.rx.tap.asDriver().drive(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
                 let image = self.contractedImage!
                 let mi = self.mozaiku(image: image, block: 10)
@@ -110,7 +110,7 @@ class ViewController: UIViewController {
 
         }).disposed(by: disposeBag)
         
-        resetButton.rx.tap.subscribe(onNext: { _ in
+        resetButton.rx.tap.asDriver().drive(onNext: { _ in
             self.imageView.image = self.contractedImage
         }).disposed(by: disposeBag)
     }
