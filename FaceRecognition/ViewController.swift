@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let s = CGSize(width: originalImage!.size.width*0.9, height: originalImage!.size.height*0.9)
+        let s = CGSize(width: originalImage!.size.width, height: originalImage!.size.height)
         UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
         originalImage?.draw(in: CGRect(origin: .zero, size: s))
         sampleImage = UIGraphicsGetImageFromCurrentImageContext()
