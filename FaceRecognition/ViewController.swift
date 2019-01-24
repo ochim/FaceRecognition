@@ -15,7 +15,7 @@ import RxCocoa
 class ViewController: UIViewController {
 
     private let originalImage = UIImage(named: "futago")
-    private var contractedImage: UIImage?
+    private var sampleImage: UIImage?
     
     @IBOutlet weak var faceDetectButton: UIButton!
     @IBOutlet weak var fillFaceButton: UIButton!
@@ -28,18 +28,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // 縮小させる
+
         let s = CGSize(width: originalImage!.size.width*0.9, height: originalImage!.size.height*0.9)
         UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
         originalImage?.draw(in: CGRect(origin: .zero, size: s))
-        contractedImage = UIGraphicsGetImageFromCurrentImageContext()
+        sampleImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        self.imageView.image = contractedImage
+        self.imageView.image = sampleImage
         
         faceDetectButton.rx.tap.asDriver().drive(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
-                var image = self.contractedImage
+                var image = self.sampleImage
                 for observation in request.results as! [VNFaceObservation] {
                     image = self.drawFaceRectangle(image: image, observation: observation)
                 }
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
                 self.imageView.image = image
             }
             
-            if let cgImage = self.contractedImage?.cgImage {
+            if let cgImage = self.sampleImage?.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         fillFaceButton.rx.tap.asDriver().drive(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
                 
-                var image = self.contractedImage!
+                var image = self.sampleImage!
                 for observation in request.results as! [VNFaceObservation] {
                     let rect = observation.boundingBox.converted(to: image.size)
                     
@@ -74,7 +74,7 @@ class ViewController: UIViewController {
                 self.imageView.image = image
             }
             
-            if let cgImage = self.contractedImage?.cgImage {
+            if let cgImage = self.sampleImage?.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
@@ -82,12 +82,12 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         mozaikuButton.rx.tap.asDriver().drive(onNext: { _ in
-            self.imageView.image = self.mozaiku(image: self.contractedImage!, block: 10)
+            self.imageView.image = self.mozaiku(image: self.sampleImage!, block: 10)
         }).disposed(by: disposeBag)
         
         faceMozaikuButton.rx.tap.asDriver().drive(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
-                let image = self.contractedImage!
+                let image = self.sampleImage!
                 let mi = self.mozaiku(image: image, block: 10)
                 
                 var tmp: UIImage? = nil
@@ -103,7 +103,7 @@ class ViewController: UIViewController {
                 self.imageView.image = tmp
             }
             
-            if let cgImage = self.contractedImage?.cgImage {
+            if let cgImage = self.sampleImage?.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
@@ -111,7 +111,7 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         resetButton.rx.tap.asDriver().drive(onNext: { _ in
-            self.imageView.image = self.contractedImage
+            self.imageView.image = self.sampleImage
         }).disposed(by: disposeBag)
     }
 
