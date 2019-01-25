@@ -14,8 +14,19 @@
 		023A45862111ADD00040392A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023A45842111ADD00040392A /* LaunchScreen.storyboard */; };
 		023A458F2111AE6C0040392A /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A458E2111AE6C0040392A /* Vision.framework */; };
 		02E4157321F70B7700F0E3D4 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */; };
+		02F17E9321FB2143009EA0DF /* FaceRecognitionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F17E9221FB2143009EA0DF /* FaceRecognitionUITests.swift */; };
 		F43C0DD927F23B917898B7C1 /* Pods_FaceRecognition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B31ED2589C13AB60A2E689C /* Pods_FaceRecognition.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		02F17E9521FB2143009EA0DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 023A45702111ADCE0040392A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 023A45772111ADCE0040392A;
+			remoteInfo = FaceRecognition;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		023A45782111ADCE0040392A /* FaceRecognition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceRecognition.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -27,6 +38,9 @@
 		023A45872111ADD00040392A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023A458E2111AE6C0040392A /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = System/Library/Frameworks/Vision.framework; sourceTree = SDKROOT; };
 		02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		02F17E9021FB2143009EA0DF /* FaceRecognitionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceRecognitionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		02F17E9221FB2143009EA0DF /* FaceRecognitionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceRecognitionUITests.swift; sourceTree = "<group>"; };
+		02F17E9421FB2143009EA0DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B31ED2589C13AB60A2E689C /* Pods_FaceRecognition.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceRecognition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7762809005F1A33CA3DFF63C /* Pods-FaceRecognition.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceRecognition.release.xcconfig"; path = "Pods/Target Support Files/Pods-FaceRecognition/Pods-FaceRecognition.release.xcconfig"; sourceTree = "<group>"; };
 		DDB4F6E933D26CCE463FFBE6 /* Pods-FaceRecognition.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceRecognition.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FaceRecognition/Pods-FaceRecognition.debug.xcconfig"; sourceTree = "<group>"; };
@@ -42,6 +56,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		02F17E8D21FB2143009EA0DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -49,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				023A457A2111ADCE0040392A /* FaceRecognition */,
+				02F17E9121FB2143009EA0DF /* FaceRecognitionUITests */,
 				023A45792111ADCE0040392A /* Products */,
 				023A458D2111AE6C0040392A /* Frameworks */,
 				1A1D8B76A835449DBA963C40 /* Pods */,
@@ -59,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				023A45782111ADCE0040392A /* FaceRecognition.app */,
+				02F17E9021FB2143009EA0DF /* FaceRecognitionUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,6 +107,15 @@
 				2B31ED2589C13AB60A2E689C /* Pods_FaceRecognition.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		02F17E9121FB2143009EA0DF /* FaceRecognitionUITests */ = {
+			isa = PBXGroup;
+			children = (
+				02F17E9221FB2143009EA0DF /* FaceRecognitionUITests.swift */,
+				02F17E9421FB2143009EA0DF /* Info.plist */,
+			);
+			path = FaceRecognitionUITests;
 			sourceTree = "<group>";
 		};
 		1A1D8B76A835449DBA963C40 /* Pods */ = {
@@ -118,18 +150,40 @@
 			productReference = 023A45782111ADCE0040392A /* FaceRecognition.app */;
 			productType = "com.apple.product-type.application";
 		};
+		02F17E8F21FB2143009EA0DF /* FaceRecognitionUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02F17E9921FB2143009EA0DF /* Build configuration list for PBXNativeTarget "FaceRecognitionUITests" */;
+			buildPhases = (
+				02F17E8C21FB2143009EA0DF /* Sources */,
+				02F17E8D21FB2143009EA0DF /* Frameworks */,
+				02F17E8E21FB2143009EA0DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				02F17E9621FB2143009EA0DF /* PBXTargetDependency */,
+			);
+			name = FaceRecognitionUITests;
+			productName = FaceRecognitionUITests;
+			productReference = 02F17E9021FB2143009EA0DF /* FaceRecognitionUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		023A45702111ADCE0040392A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = recruit;
 				TargetAttributes = {
 					023A45772111ADCE0040392A = {
 						CreatedOnToolsVersion = 9.4.1;
+					};
+					02F17E8F21FB2143009EA0DF = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 023A45772111ADCE0040392A;
 					};
 				};
 			};
@@ -147,6 +201,7 @@
 			projectRoot = "";
 			targets = (
 				023A45772111ADCE0040392A /* FaceRecognition */,
+				02F17E8F21FB2143009EA0DF /* FaceRecognitionUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -159,6 +214,13 @@
 				023A45862111ADD00040392A /* LaunchScreen.storyboard in Resources */,
 				023A45832111ADD00040392A /* Assets.xcassets in Resources */,
 				023A45812111ADCE0040392A /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02F17E8E21FB2143009EA0DF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,7 +293,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		02F17E8C21FB2143009EA0DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02F17E9321FB2143009EA0DF /* FaceRecognitionUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		02F17E9621FB2143009EA0DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 023A45772111ADCE0040392A /* FaceRecognition */;
+			targetProxy = 02F17E9521FB2143009EA0DF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		023A457F2111ADCE0040392A /* Main.storyboard */ = {
@@ -375,7 +453,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GCNB5DDA74;
 				INFOPLIST_FILE = FaceRecognition/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = recruit.ochi.FaceRecognition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -391,11 +472,57 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GCNB5DDA74;
 				INFOPLIST_FILE = FaceRecognition/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = recruit.ochi.FaceRecognition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		02F17E9721FB2143009EA0DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GCNB5DDA74;
+				INFOPLIST_FILE = FaceRecognitionUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = recruit.ochi.FaceRecognitionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FaceRecognition;
+			};
+			name = Debug;
+		};
+		02F17E9821FB2143009EA0DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GCNB5DDA74;
+				INFOPLIST_FILE = FaceRecognitionUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = recruit.ochi.FaceRecognitionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FaceRecognition;
 			};
 			name = Release;
 		};
@@ -416,6 +543,15 @@
 			buildConfigurations = (
 				023A458B2111ADD00040392A /* Debug */,
 				023A458C2111ADD00040392A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02F17E9921FB2143009EA0DF /* Build configuration list for PBXNativeTarget "FaceRecognitionUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02F17E9721FB2143009EA0DF /* Debug */,
+				02F17E9821FB2143009EA0DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

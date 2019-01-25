@@ -26,22 +26,27 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RP3-4t-gCr">
                                         <rect key="frame" x="23" y="0.0" width="50" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Face Detect Button"/>
                                         <state key="normal" title=" 顔検出"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gQZ-nJ-GXT">
                                         <rect key="frame" x="0.0" y="45" width="96" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Fill Face Button"/>
                                         <state key="normal" title=" 顔塗りつぶし"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQq-ir-pHm">
                                         <rect key="frame" x="17" y="90" width="62" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Mozaiku Button"/>
                                         <state key="normal" title="モザイク"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xEc-06-Sz5">
                                         <rect key="frame" x="9.5" y="135" width="77" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Face Mozaiku Button"/>
                                         <state key="normal" title="顔モザイク"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="23X-qx-bH7">
                                         <rect key="frame" x="30.5" y="180" width="35" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Reset Button"/>
                                         <state key="normal" title="reset"/>
                                     </button>
                                 </subviews>
