@@ -12,16 +12,15 @@ import CoreImage
 import RxSwift
 import RxCocoa
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    private let originalImage = UIImage(named: "futago")
     private var sampleImage: UIImage?
     
+    @IBOutlet weak var selectImaageButton: UIButton!
     @IBOutlet weak var faceDetectButton: UIButton!
     @IBOutlet weak var fillFaceButton: UIButton!
     @IBOutlet weak var mozaikuButton: UIButton!
     @IBOutlet weak var faceMozaikuButton: UIButton!
-    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
 
     let disposeBag = DisposeBag()
@@ -29,13 +28,33 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let s = CGSize(width: originalImage!.size.width, height: originalImage!.size.height)
-        UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
-        originalImage?.draw(in: CGRect(origin: .zero, size: s))
-        sampleImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        self.imageView.image = sampleImage
+        selectImaageButton.rx.tap.asDriver().drive(onNext: { _ in
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: {action in
+                    picker.sourceType = .camera
+                    self.present(picker, animated: true, completion: nil)
+                }))
+            }
+            alert.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { action in
+                picker.sourceType = .photoLibrary
+                // on iPad we are required to present this as a popover
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    picker.modalPresentationStyle = .popover
+                    picker.popoverPresentationController?.sourceView = self.view
+                    picker.popoverPresentationController?.sourceRect = self.selectImaageButton.frame
+                }
+                self.present(picker, animated: true, completion: nil)
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            // on iPad this is a popover
+            alert.popoverPresentationController?.sourceView = self.view
+            alert.popoverPresentationController?.sourceRect = self.selectImaageButton.frame
+            self.present(alert, animated: true, completion: nil)
+
+        }).disposed(by: disposeBag)
         
         faceDetectButton.rx.tap.asDriver().drive(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
@@ -43,10 +62,10 @@ class ViewController: UIViewController {
                 for observation in request.results as! [VNFaceObservation] {
                     image = self.drawFaceRectangle(image: image, observation: observation)
                 }
-                
+
                 self.imageView.image = image
             }
-            
+
             if let cgImage = self.sampleImage?.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
@@ -82,13 +101,13 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         mozaikuButton.rx.tap.asDriver().drive(onNext: { _ in
-            self.imageView.image = self.mozaiku(image: self.sampleImage!, block: 10)
+            self.imageView.image = self.mozaiku(image: self.sampleImage!, block: 20)
         }).disposed(by: disposeBag)
         
         faceMozaikuButton.rx.tap.asDriver().drive(onNext: { _ in
             let request = VNDetectFaceRectanglesRequest { (request, error) in
                 let image = self.sampleImage!
-                let mi = self.mozaiku(image: image, block: 10)
+                let mi = self.mozaiku(image: image, block: 20)
                 
                 var tmp: UIImage? = nil
                 for observation in request.results as! [VNFaceObservation] {
@@ -110,14 +129,24 @@ class ViewController: UIViewController {
 
         }).disposed(by: disposeBag)
         
-        resetButton.rx.tap.asDriver().drive(onNext: { _ in
-            self.imageView.image = self.sampleImage
-        }).disposed(by: disposeBag)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        dismiss(animated: true, completion: nil)
+        
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let s = CGSize(width: image.size.width, height: image.size.height)
+        UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
+        image.draw(in: CGRect(origin: .zero, size: s))
+        sampleImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        self.imageView.image = sampleImage
     }
 
     private func mozaiku(image: UIImage, block: CGFloat) -> UIImage {
