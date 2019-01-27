@@ -28,6 +28,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //
         selectImaageButton.rx.tap.asDriver().drive(onNext: { _ in
             let picker = UIImagePickerController()
             picker.delegate = self
@@ -56,9 +57,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         }).disposed(by: disposeBag)
         
+        //
         faceDetectButton.rx.tap.asDriver().drive(onNext: { _ in
+            guard let sampleImage = self.sampleImage else {
+                return
+            }
+            
             let request = VNDetectFaceRectanglesRequest { (request, error) in
-                var image = self.sampleImage
+                var image = sampleImage
                 for observation in request.results as! [VNFaceObservation] {
                     image = self.drawFaceRectangle(image: image, observation: observation)
                 }
@@ -66,17 +72,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageView.image = image
             }
 
-            if let cgImage = self.sampleImage?.cgImage {
+            if let cgImage = sampleImage.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
 
         }).disposed(by: disposeBag)
         
+        //
         fillFaceButton.rx.tap.asDriver().drive(onNext: { _ in
+            guard let sampleImage = self.sampleImage else {
+                return
+            }
+
             let request = VNDetectFaceRectanglesRequest { (request, error) in
                 
-                var image = self.sampleImage!
+                var image = sampleImage
                 for observation in request.results as! [VNFaceObservation] {
                     let rect = observation.boundingBox.converted(to: image.size)
                     
@@ -93,20 +104,29 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageView.image = image
             }
             
-            if let cgImage = self.sampleImage?.cgImage {
+            if let cgImage = sampleImage.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
 
         }).disposed(by: disposeBag)
         
+        //
         mozaikuButton.rx.tap.asDriver().drive(onNext: { _ in
-            self.imageView.image = self.mozaiku(image: self.sampleImage!, block: 20)
+            guard let sampleImage = self.sampleImage else {
+                return
+            }
+            self.imageView.image = self.mozaiku(image: sampleImage, block: 20)
+            
         }).disposed(by: disposeBag)
         
+        //
         faceMozaikuButton.rx.tap.asDriver().drive(onNext: { _ in
+            guard let sampleImage = self.sampleImage else {
+                return
+            }
             let request = VNDetectFaceRectanglesRequest { (request, error) in
-                let image = self.sampleImage!
+                let image = sampleImage
                 let mi = self.mozaiku(image: image, block: 20)
                 
                 var tmp: UIImage? = nil
@@ -122,7 +142,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 self.imageView.image = tmp
             }
             
-            if let cgImage = self.sampleImage?.cgImage {
+            if let cgImage = sampleImage.cgImage {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 try? handler.perform([request])
             }
@@ -166,19 +186,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return outputImage
     }
     
-    private func drawFaceRectangle(image: UIImage?, observation: VNFaceObservation) -> UIImage? {
-        let imageSize = image!.size
+    private func drawFaceRectangle(image: UIImage, observation: VNFaceObservation) -> UIImage {
+        let imageSize = image.size
         
         UIGraphicsBeginImageContextWithOptions(imageSize, false, 0.0)
         let context = UIGraphicsGetCurrentContext()
-        image?.draw(in: CGRect(origin: .zero, size: imageSize))
+        image.draw(in: CGRect(origin: .zero, size: imageSize))
         context?.setLineWidth(2.0)
         context?.setStrokeColor(UIColor.green.cgColor)
         context?.stroke(observation.boundingBox.converted(to: imageSize))
         let drawnImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return drawnImage
+        return drawnImage!
     }
     
 }

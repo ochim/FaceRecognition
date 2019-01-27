@@ -48,6 +48,7 @@
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KBL-7n-3ME">
                                 <rect key="frame" x="50" y="407" width="31" height="30"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Select Imaage Button"/>
                                 <state key="normal" title="選択">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>

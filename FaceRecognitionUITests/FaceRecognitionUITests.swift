@@ -29,11 +29,14 @@ class FaceRecognitionUITests: XCTestCase {
     func testMain() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        XCUIApplication().buttons["Face Detect Button"].tap()
-        XCUIApplication().buttons["Fill Face Button"].tap()
-        XCUIApplication().buttons["Mozaiku Button"].tap()
-        XCUIApplication().buttons["Face Mozaiku Button"].tap()
-        XCUIApplication().buttons["Reset Button"].tap()
+        
+        let app = XCUIApplication()
+        app.buttons["Select Imaage Button"].tap()
+        app.sheets.buttons["Cancel"].tap()
+        app.buttons["Face Detect Button"].tap()
+        app.buttons["Fill Face Button"].tap()
+        app.buttons["Mozaiku Button"].tap()
+        app.buttons["Face Mozaiku Button"].tap()
     }
 
 }
