@@ -12,7 +12,7 @@ import CoreImage
 import RxSwift
 import RxCocoa
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController {
 
     private var sampleImage: UIImage?
     
@@ -31,28 +31,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //
         selectImaageButton.rx.tap.asDriver().drive(onNext: { _ in
             let picker = UIImagePickerController()
-            picker.delegate = self
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: {action in
-                    picker.sourceType = .camera
-                    self.present(picker, animated: true, completion: nil)
+                    self.launchPhotoPicker(.camera)
                 }))
             }
             alert.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { action in
-                picker.sourceType = .photoLibrary
                 // on iPad we are required to present this as a popover
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     picker.modalPresentationStyle = .popover
                     picker.popoverPresentationController?.sourceView = self.view
                     picker.popoverPresentationController?.sourceRect = self.selectImaageButton.frame
                 }
-                self.present(picker, animated: true, completion: nil)
+                self.launchPhotoPicker(.photoLibrary)
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             // on iPad this is a popover
             alert.popoverPresentationController?.sourceView = self.view
             alert.popoverPresentationController?.sourceRect = self.selectImaageButton.frame
+            
             self.present(alert, animated: true, completion: nil)
 
         }).disposed(by: disposeBag)
@@ -156,17 +155,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        dismiss(animated: true, completion: nil)
-        
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        let s = CGSize(width: image.size.width, height: image.size.height)
-        UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
-        image.draw(in: CGRect(origin: .zero, size: s))
-        sampleImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        self.imageView.image = sampleImage
+    // UIImagePickerControllerの起動と選択した画像の処理
+    private func launchPhotoPicker(_ type: UIImagePickerController.SourceType) {
+        UIImagePickerController.rx.createWithParent(self) { picker in
+                picker.sourceType = type
+                picker.allowsEditing = false
+            }
+            .flatMap { $0.rx.didFinishPickingMediaWithInfo }
+            .take(1)
+            .map { info in
+                let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+                let s = CGSize(width: image.size.width, height: image.size.height)
+                UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
+                image.draw(in: CGRect(origin: .zero, size: s))
+                self.sampleImage = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                return self.sampleImage!
+            }
+            .bind(to: self.imageView.rx.image)
+            .disposed(by: disposeBag)
     }
 
     private func mozaiku(image: UIImage, block: CGFloat) -> UIImage {
