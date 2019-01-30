@@ -13,6 +13,9 @@
 		023A45832111ADD00040392A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023A45822111ADD00040392A /* Assets.xcassets */; };
 		023A45862111ADD00040392A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 023A45842111ADD00040392A /* LaunchScreen.storyboard */; };
 		023A458F2111AE6C0040392A /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 023A458E2111AE6C0040392A /* Vision.framework */; };
+		027A9D4922017631001E13AC /* UIImagePickerController+RxCreate.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027A9D4822017631001E13AC /* UIImagePickerController+RxCreate.swift.swift */; };
+		027A9D4C22017843001E13AC /* UIImagePickerController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027A9D4A22017843001E13AC /* UIImagePickerController+Rx.swift */; };
+		027A9D4D22017843001E13AC /* RxImagePickerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027A9D4B22017843001E13AC /* RxImagePickerDelegateProxy.swift */; };
 		02E4157321F70B7700F0E3D4 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */; };
 		02F17E9321FB2143009EA0DF /* FaceRecognitionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F17E9221FB2143009EA0DF /* FaceRecognitionUITests.swift */; };
 		F43C0DD927F23B917898B7C1 /* Pods_FaceRecognition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B31ED2589C13AB60A2E689C /* Pods_FaceRecognition.framework */; };
@@ -37,6 +40,9 @@
 		023A45852111ADD00040392A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		023A45872111ADD00040392A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		023A458E2111AE6C0040392A /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = System/Library/Frameworks/Vision.framework; sourceTree = SDKROOT; };
+		027A9D4822017631001E13AC /* UIImagePickerController+RxCreate.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+RxCreate.swift.swift"; sourceTree = "<group>"; };
+		027A9D4A22017843001E13AC /* UIImagePickerController+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImagePickerController+Rx.swift"; sourceTree = "<group>"; };
+		027A9D4B22017843001E13AC /* RxImagePickerDelegateProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxImagePickerDelegateProxy.swift; sourceTree = "<group>"; };
 		02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		02F17E9021FB2143009EA0DF /* FaceRecognitionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FaceRecognitionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		02F17E9221FB2143009EA0DF /* FaceRecognitionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceRecognitionUITests.swift; sourceTree = "<group>"; };
@@ -96,6 +102,9 @@
 				023A45842111ADD00040392A /* LaunchScreen.storyboard */,
 				023A45872111ADD00040392A /* Info.plist */,
 				02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */,
+				027A9D4822017631001E13AC /* UIImagePickerController+RxCreate.swift.swift */,
+				027A9D4B22017843001E13AC /* RxImagePickerDelegateProxy.swift */,
+				027A9D4A22017843001E13AC /* UIImagePickerController+Rx.swift */,
 			);
 			path = FaceRecognition;
 			sourceTree = "<group>";
@@ -287,8 +296,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				027A9D4D22017843001E13AC /* RxImagePickerDelegateProxy.swift in Sources */,
 				02E4157321F70B7700F0E3D4 /* UIImage+Extension.swift in Sources */,
 				023A457E2111ADCE0040392A /* ViewController.swift in Sources */,
+				027A9D4922017631001E13AC /* UIImagePickerController+RxCreate.swift.swift in Sources */,
+				027A9D4C22017843001E13AC /* UIImagePickerController+Rx.swift in Sources */,
 				023A457C2111ADCE0040392A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
