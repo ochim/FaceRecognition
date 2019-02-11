@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var selectImaageButton: UIButton!
     @IBOutlet weak var faceDetectButton: UIButton!
-    @IBOutlet weak var fillFaceButton: UIButton!
+    @IBOutlet weak var faceLandmarksButton: UIButton!
     @IBOutlet weak var mozaikuButton: UIButton!
     @IBOutlet weak var faceMozaikuButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
@@ -79,33 +79,33 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         //
-        fillFaceButton.rx.tap.asDriver().drive(onNext: { _ in
+        faceLandmarksButton.rx.tap.asDriver().drive(onNext: { _ in
             guard let sampleImage = self.sampleImage else {
                 return
             }
 
-            let request = VNDetectFaceRectanglesRequest { (request, error) in
-                
-                var image = sampleImage
-                for observation in request.results as! [VNFaceObservation] {
-                    let rect = observation.boundingBox.converted(to: image.size)
-                    
-                    UIGraphicsBeginImageContextWithOptions(image.size, false, 0.0)
-                    let context = UIGraphicsGetCurrentContext()
-                    image.draw(in: CGRect(origin: .zero, size: image.size))
-                    context?.setFillColor(UIColor.black.cgColor)
-                    context?.fill(rect)
-                    let drawnImage = UIGraphicsGetImageFromCurrentImageContext()
-                    UIGraphicsEndImageContext()
-                    
-                    image = drawnImage!
-                }
-                self.imageView.image = image
+            var orientation:Int32 = 0
+            
+            // detect image orientation, we need it to be accurate for the face detection to work
+            switch sampleImage.imageOrientation {
+            case .up:
+                orientation = 1
+            case .right:
+                orientation = 6
+            case .down:
+                orientation = 3
+            case .left:
+                orientation = 8
+            default:
+                orientation = 1
             }
             
-            if let cgImage = sampleImage.cgImage {
-                let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-                try? handler.perform([request])
+            let faceLandmarksRequest = VNDetectFaceLandmarksRequest(completionHandler: self.handleFaceFeatures)
+            let requestHandler = VNImageRequestHandler(cgImage: sampleImage.cgImage!, orientation: CGImagePropertyOrientation(rawValue: CGImagePropertyOrientation.RawValue(orientation))! ,options: [:])
+            do {
+                try requestHandler.perform([faceLandmarksRequest])
+            } catch {
+                print(error)
             }
 
         }).disposed(by: disposeBag)
@@ -206,6 +206,274 @@ class ViewController: UIViewController {
         UIGraphicsEndImageContext()
         
         return drawnImage!
+    }
+    
+    // 目印判定の後処理
+    func handleFaceFeatures(request: VNRequest, errror: Error?) {
+        guard let observations = request.results as? [VNFaceObservation] else {
+            fatalError("unexpected result type!")
+        }
+        
+        guard let sampleImage = self.sampleImage else {
+            return
+        }
+        
+        let s = CGSize(width: sampleImage.size.width, height: sampleImage.size.height)
+        UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
+        sampleImage.draw(in: CGRect(origin: .zero, size: s))
+        var image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        for face in observations {
+            image = addFaceLandmarksToImage(face, image!)
+        }
+        self.imageView.image = image
+    }
+    
+    func addFaceLandmarksToImage(_ face: VNFaceObservation, _ baseImage: UIImage) -> UIImage {
+
+        let lineWidth: CGFloat = 2.0
+        
+        UIGraphicsBeginImageContextWithOptions(baseImage.size, true, 0.0)
+        let context = UIGraphicsGetCurrentContext()
+        
+        // draw the image
+        baseImage.draw(in: CGRect(x: 0, y: 0, width: baseImage.size.width, height: baseImage.size.height))
+
+        context?.translateBy(x: 0, y: baseImage.size.height)
+        context?.scaleBy(x: 1.0, y: -1.0)
+        
+        // draw the face rect
+        let w = face.boundingBox.size.width * baseImage.size.width
+        let h = face.boundingBox.size.height * baseImage.size.height
+        let x = face.boundingBox.origin.x * baseImage.size.width
+        let y = face.boundingBox.origin.y * baseImage.size.height
+        let faceRect = CGRect(x: x, y: y, width: w, height: h)
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        context?.setLineWidth(lineWidth)
+        context?.addRect(faceRect)
+        context?.drawPath(using: .stroke)
+        context?.restoreGState()
+        
+        // face contour
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.faceContour {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // outer lips
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.outerLips {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.closePath()
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // inner lips
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.innerLips {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.closePath()
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // left eye
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.leftEye {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.closePath()
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // right eye
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.rightEye {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.closePath()
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // left pupil
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.leftPupil {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.closePath()
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // right pupil
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.rightPupil {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.closePath()
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // left eyebrow
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.leftEyebrow {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // right eyebrow
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.rightEyebrow {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // nose
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.nose {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.closePath()
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // nose crest
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.noseCrest {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // median line
+        context?.saveGState()
+        context?.setStrokeColor(UIColor.yellow.cgColor)
+        if let landmark = face.landmarks?.medianLine {
+            for i in 0...landmark.pointCount - 1 { // last point is 0,0
+                let point = landmark.normalizedPoints[i] //.point(at: i)
+                if i == 0 {
+                    context?.move(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                } else {
+                    context?.addLine(to: CGPoint(x: x + CGFloat(point.x) * w, y: y + CGFloat(point.y) * h))
+                }
+            }
+        }
+        context?.setLineWidth(lineWidth)
+        context?.drawPath(using: .stroke)
+        context?.saveGState()
+        
+        // get the final image
+        let finalImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        // end drawing context
+        UIGraphicsEndImageContext()
+        
+        return finalImage!
     }
     
 }
