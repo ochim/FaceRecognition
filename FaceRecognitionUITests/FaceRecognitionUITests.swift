@@ -32,9 +32,10 @@ class FaceRecognitionUITests: XCTestCase {
         
         let app = XCUIApplication()
         app.buttons["Select Imaage Button"].tap()
+        // Photo Libraryを選択するとテストが終わってしまう
         app.sheets.buttons["Cancel"].tap()
         app.buttons["Face Detect Button"].tap()
-        app.buttons["Fill Face Button"].tap()
+        app.buttons["Face Landmarks Button"].tap()
         app.buttons["Mozaiku Button"].tap()
         app.buttons["Face Mozaiku Button"].tap()
     }
