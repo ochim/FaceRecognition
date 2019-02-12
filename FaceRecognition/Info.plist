@@ -20,8 +20,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>カメラで撮影して画像処理に使います</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>アルバムを表示します</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>アルバムから選択して画像処理に使います</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -43,9 +47,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>カメラで撮影して画像処理に使います</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>アルバムから選択して画像処理に使います</string>
 </dict>
 </plist>

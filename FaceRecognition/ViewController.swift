@@ -115,7 +115,7 @@ class ViewController: UIViewController {
             guard let sampleImage = self.sampleImage else {
                 return
             }
-            self.imageView.image = self.mozaiku(image: sampleImage, block: 20)
+            self.imageView.image = self.mozaiku(image: sampleImage, block: 30)
             
         }).disposed(by: disposeBag)
         
@@ -126,7 +126,7 @@ class ViewController: UIViewController {
             }
             let request = VNDetectFaceRectanglesRequest { (request, error) in
                 let image = sampleImage
-                let mi = self.mozaiku(image: image, block: 20)
+                let mi = self.mozaiku(image: image, block: 30)
                 
                 var tmp: UIImage? = nil
                 for observation in request.results as! [VNFaceObservation] {
