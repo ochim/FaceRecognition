@@ -18,6 +18,7 @@
 		027A9D4D22017843001E13AC /* RxImagePickerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027A9D4B22017843001E13AC /* RxImagePickerDelegateProxy.swift */; };
 		02E4157321F70B7700F0E3D4 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E4157221F70B7700F0E3D4 /* UIImage+Extension.swift */; };
 		02F17E9321FB2143009EA0DF /* FaceRecognitionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F17E9221FB2143009EA0DF /* FaceRecognitionUITests.swift */; };
+		568FBD5F22CD29B400B8AE66 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 568FBD5E22CD29B400B8AE66 /* README.md */; };
 		F43C0DD927F23B917898B7C1 /* Pods_FaceRecognition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B31ED2589C13AB60A2E689C /* Pods_FaceRecognition.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		02F17E9221FB2143009EA0DF /* FaceRecognitionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceRecognitionUITests.swift; sourceTree = "<group>"; };
 		02F17E9421FB2143009EA0DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B31ED2589C13AB60A2E689C /* Pods_FaceRecognition.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceRecognition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		568FBD5E22CD29B400B8AE66 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7762809005F1A33CA3DFF63C /* Pods-FaceRecognition.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceRecognition.release.xcconfig"; path = "Pods/Target Support Files/Pods-FaceRecognition/Pods-FaceRecognition.release.xcconfig"; sourceTree = "<group>"; };
 		DDB4F6E933D26CCE463FFBE6 /* Pods-FaceRecognition.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceRecognition.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FaceRecognition/Pods-FaceRecognition.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,6 +77,7 @@
 		023A456F2111ADCE0040392A = {
 			isa = PBXGroup;
 			children = (
+				568FBD5E22CD29B400B8AE66 /* README.md */,
 				023A457A2111ADCE0040392A /* FaceRecognition */,
 				02F17E9121FB2143009EA0DF /* FaceRecognitionUITests */,
 				023A45792111ADCE0040392A /* Products */,
@@ -222,6 +225,7 @@
 			files = (
 				023A45862111ADD00040392A /* LaunchScreen.storyboard in Resources */,
 				023A45832111ADD00040392A /* Assets.xcassets in Resources */,
+				568FBD5F22CD29B400B8AE66 /* README.md in Resources */,
 				023A45812111ADCE0040392A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,3 +6,8 @@
 - 顔判定とモザイクを組み合わせた顔モザイク処理
 - RxSwiftを用いたリアクティブな実装
 - XCUIApplication()でUITestを追加
+
+## ビルド確認
+- Xcode 10.2.1
+- Swift 4.0
+
