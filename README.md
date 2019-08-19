@@ -2,6 +2,7 @@
 サンプルコード
 
 - iOSのVision Frameworkによる顔判定
+- iOSのVision Frameworkによるランドマーク判定
 - CIFilterによるモザイク処理
 - 顔判定とモザイクを組み合わせた顔モザイク処理
 - RxSwiftを用いたリアクティブな実装
