@@ -218,14 +218,9 @@ class ViewController: UIViewController {
             return
         }
         
-        let s = CGSize(width: sampleImage.size.width, height: sampleImage.size.height)
-        UIGraphicsBeginImageContextWithOptions(s, false, 0.0)
-        sampleImage.draw(in: CGRect(origin: .zero, size: s))
-        var image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
+        var image :UIImage?
         for face in observations {
-            image = addFaceLandmarksToImage(face, image!)
+            image = addFaceLandmarksToImage(face, sampleImage)
         }
         self.imageView.image = image
     }
@@ -236,9 +231,14 @@ class ViewController: UIViewController {
         
         UIGraphicsBeginImageContextWithOptions(baseImage.size, true, 0.0)
         let context = UIGraphicsGetCurrentContext()
-        
+
+        // fill background
+        let baseRect: CGRect = CGRect(x: 0, y: 0, width: baseImage.size.width, height: baseImage.size.height)
+        UIColor.white.setFill()
+        context?.fill(baseRect)
+  
         // draw the image
-        baseImage.draw(in: CGRect(x: 0, y: 0, width: baseImage.size.width, height: baseImage.size.height))
+        baseImage.draw(in: baseRect)
 
         context?.translateBy(x: 0, y: baseImage.size.height)
         context?.scaleBy(x: 1.0, y: -1.0)
