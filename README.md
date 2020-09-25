@@ -9,6 +9,6 @@
 - XCUIApplication()でUITestを追加
 
 ## ビルド確認
-- Mac OSX 10.14.5
-- Xcode 10.2.1
+- Mac OSX 10.15.6
+- Xcode 12.0
 - Swift 4.0
